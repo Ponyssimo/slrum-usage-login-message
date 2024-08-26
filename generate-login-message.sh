@@ -55,6 +55,19 @@ while read -r line; do
     fi
 done < <(sacct --starttime=now-2weeks --endtime=now --state=COMPLETED -u $user --format jobid,TRESUsageInTot,ReqMem -p)
 
+if [ "$currJob" != 0 ]; then
+    percent=$(awk "BEGIN { pc=100*${currMem}/${currReq}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
+    if [ "$percent" > "$maxMem" ]; then
+        maxJob=$currJob
+        maxMem=$percent
+    fi
+    if [ "$percent" < "$minMem" ] || [ minMem == 0 ]; then
+        minJob=$currJob
+        minMem=$percent
+    fi
+    ((accum+=$percent))
+fi
+
 avg=$((accum / count))
 
 echo "Your worst performing recent job was job number $minJob with $minMem% memory usage"
