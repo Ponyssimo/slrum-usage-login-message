@@ -26,9 +26,7 @@ while read -r line; do
             continue
         fi
         usage=$(echo $info | cut -d ',' -f 4 | tr -d -c 0-9)
-        if [ $usage > $currMem ]; then
-            currMem=$usage
-        fi
+        ((currMem+=$usage))
     else
         if [ $currJob != 0 ]; then
             percent=$(awk "BEGIN { pc=100*${currMem}/${currReq}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
