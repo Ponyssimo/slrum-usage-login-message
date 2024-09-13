@@ -77,9 +77,3 @@ if [ $count -ne 0 ]; then
     echo "Your worst performing recent job was job number $minJob with $minMem% memory usage"
     echo "Your average recent memory usage was $avg%"
 fi
-
-usage=$(df -Ph /home/$user | awk 'NR == 2{print $5+0}')
-((usage=100-$usage))
-if [ $usage -lt 5 ]; then
-    echo "Warning: your available storage is $usage%"
-fi
