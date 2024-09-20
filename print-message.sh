@@ -6,7 +6,7 @@ if [ ! -v $1 ]; then
     user=$1
 fi
 
-dir=$(pwd)
+dir=$(dirname "$0")
 filedir="$dir/messages.txt"
 
 count=0

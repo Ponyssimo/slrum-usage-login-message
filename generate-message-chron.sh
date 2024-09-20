@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dir=$(pwd)
+dir=$(dirname "$0")
 filedir="$dir/messages.txt"
 
 if [ -f $filedir ]; then
