@@ -64,7 +64,7 @@ if [ $currJob != 0 ]; then
         maxJob=$currJob
         maxMem=$percent
     fi
-    if [ $percent -lt $minMem ] || [ minMem == 0 ]; then
+    if [ $percent -lt $minMem ] || [ $minMem -eq 0 ]; then
         minJob=$currJob
         minMem=$percent
     fi
