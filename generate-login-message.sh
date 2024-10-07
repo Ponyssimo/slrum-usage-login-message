@@ -22,7 +22,7 @@ while read -r line; do
         continue
     fi
     if [  "$info" != "" ]; then
-        if [ $currReq -eq 1024 ]; then
+        if [ $currReq -lt 2097152 ]; then
             continue
         fi
         usage=$(echo $info | cut -d ',' -f 4 | tr -d -c 0-9)
@@ -51,12 +51,16 @@ while read -r line; do
         elif [ "$(echo "$req" | tr -d 0-9)" == "T" ]; then
             ((currReq=1073741824 * $(echo "$req" | tr -d -c 0-9)))
         fi
-        if [ $currReq -ne 1024 ]; then
+        reqCPU=$(echo $line | cut -d '|' -f 4)
+        if [ $reqCPU -eq 1 ]; then
+            curreq=0
+        fi
+        if [ $currReq -lt 2097152 ]; then
             ((count++))
         fi
         currMem=0
     fi
-done < <(sacct --starttime=now-2weeks --endtime=now --state=COMPLETED -u $user --format jobid,TRESUsageInTot,ReqMem -p)
+done < <(sacct --starttime=now-2weeks --endtime=now --state=COMPLETED -u $user --format jobid,TRESUsageInTot,ReqMem,ReqCPUS -p)
 
 if [ $currJob != 0 ]; then
     percent=$(awk "BEGIN { pc=100*${currMem}/${currReq}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
