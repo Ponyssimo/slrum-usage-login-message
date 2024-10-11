@@ -55,12 +55,20 @@ while read -r line; do
         if [ $reqCPU -eq 1 ]; then
             curreq=0
         fi
-        if [ $currReq -lt 2097152 ]; then
+        startTime=$(echo $line | cut -d '|' -f 5)
+        endTime=$(echo $line | cut -d '|' -f 6)
+        startSec=$(date -d $startTime +"%s")
+        endSec=$(date -d $endTime +"%s")
+        elapsedTime=$((endSec - startSec))
+        if [ elapsedTime -lt 180 ]; then
+            curreq=0
+        fi
+        if [ $currReq -gt 2097152 ]; then
             ((count++))
         fi
         currMem=0
     fi
-done < <(sacct --starttime=now-2weeks --endtime=now --state=COMPLETED -u $user --format jobid,TRESUsageInTot,ReqMem,ReqCPUS -p)
+done < <(sacct --starttime=now-2weeks --endtime=now --state=COMPLETED -u $user --format jobid,TRESUsageInTot,ReqMem,ReqCPUS,Start,End -p)
 
 if [ $currJob != 0 ]; then
     percent=$(awk "BEGIN { pc=100*${currMem}/${currReq}; i=int(pc); print (pc-i<0.5)?i:i+1 }")
