@@ -90,6 +90,7 @@ while read -r line; do
         # Reset the memory used accumulator
         currMem=0
     fi
+# Get all Slurm jobs for the user
 done < <(sacct --starttime=now-2weeks --endtime=now --state=COMPLETED -u $user --format jobid,TRESUsageInTot,ReqMem,ReqCPUS,Start,End -p)
 
 process_job
