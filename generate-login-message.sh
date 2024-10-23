@@ -2,6 +2,7 @@
 
 user=$USER
 
+# If a user is specified, use that user instead of the user running the command
 if [ ! -v $1 ]; then
     user=$1
 fi
