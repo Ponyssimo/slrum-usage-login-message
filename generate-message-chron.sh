@@ -21,7 +21,8 @@ while read -r line; do
     # if the message isn't empty
     if [ $message != "" ]; then
         touch $filedir
-        echo "$message" > $filedir
+        echo "$message" >> $filedir
+        echo '\e]8;;docs.rc.rit.edu\e\\RC Documentation\e]8;;\e\\' >> $filedir
     fi
 # Get all Slurm users
 done< <(sacctmgr show user -P)
