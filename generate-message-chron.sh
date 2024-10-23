@@ -19,10 +19,10 @@ while read -r line; do
     
     # Create a new file containing the login message
     # if the message isn't empty
-    if [ $message != "" ]; then
+    if [ "$message" != "" ]; then
         touch $filedir
         echo "$message" >> $filedir
-        echo '\e]8;;docs.rc.rit.edu\e\\RC Documentation\e]8;;\e\\' >> $filedir
+        echo '\e]8;;https://docs.rc.rit.edu\e\\RC Documentation\e]8;;\e\\' >> $filedir
     fi
 # Get all Slurm users
 done< <(sacctmgr show user -P)
