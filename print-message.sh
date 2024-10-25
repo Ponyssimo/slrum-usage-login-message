@@ -16,3 +16,12 @@ if [ -e $filedir ]; then
         echo -e "$line"
     done < "$filedir"
 fi
+
+# Get storage usage for the user and print a warning message if available space
+# is less than threshold
+usage=$(df -Ph /home/$user | awk 'NR == 2{print $5+0}')
+((usage=100-$usage))
+if [ $usage -lt 5 ]; then
+    echo "Warning: your available storage is $usage%"
+    echo -e "$(tput setaf 1)Warning: your available storage is $usage%$(tput sgr0)"
+fi
