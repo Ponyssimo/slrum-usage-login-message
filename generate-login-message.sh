@@ -11,7 +11,7 @@ memThreshold=2097152
 maxJob=0
 maxMem=0
 minJob=0
-minMem=0
+minMem=101
 currJob=0
 currMem=0
 currReq=0
@@ -27,7 +27,7 @@ function process_job {
             maxJob=$currJob
             maxMem=$percent
         fi
-        if [ $percent -lt $minMem ] || [ $minMem -eq 0 ]; then
+        if [ $percent -lt $minMem ]; then
             minJob=$currJob
             minMem=$percent
         fi
@@ -100,6 +100,7 @@ process_job
 if [ $count -ne 0 ]; then
     avg=$((accum / count))
 
+    echo "Your best performing recent job was job number $maxJob with $maxMem% memory usage"
     echo "Your worst performing recent job was job number $minJob with $minMem% memory usage"
     echo "Your average recent memory usage was $avg%"
 fi
