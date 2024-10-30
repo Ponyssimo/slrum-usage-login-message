@@ -50,6 +50,9 @@ while read -r line; do
         fi
         usage=$(echo $info | cut -d ',' -f 4 | tr -d -c 0-9)
         ((currMem+=$usage))
+        if [ $currMem -gt $currReq ]; then
+            currMem=$currReq
+        fi
         
     # Else, process the previous job and reset for the new job
     else
@@ -72,7 +75,7 @@ while read -r line; do
         # set the requested memory to 0 so they will be skipped
         reqCPU=$(echo $line | cut -d '|' -f 4)
         if [ $reqCPU -eq 1 ]; then
-            curreq=0
+            currReq=1
         fi
         startTime=$(echo $line | cut -d '|' -f 5)
         endTime=$(echo $line | cut -d '|' -f 6)
@@ -80,7 +83,7 @@ while read -r line; do
         endSec=$(date -d $endTime +"%s")
         elapsedTime=$((endSec - startSec))
         if [ $elapsedTime -lt 180 ]; then
-            curreq=0
+            currReq=1
         fi
 
         # If the requested memory is at or above the threshold, increment the job count
