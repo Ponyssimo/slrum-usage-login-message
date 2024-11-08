@@ -12,9 +12,7 @@ filedir="/var/spool/motd/$user"
 
 # If the user has a message, loop through each line and print it
 if [ -e $filedir ]; then
-    while read -r line; do
-        echo -e "$line"
-    done < "$filedir"
+    cat $filedir
     echo
 fi
 
